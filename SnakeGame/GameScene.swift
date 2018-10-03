@@ -180,7 +180,7 @@ struct CollisionCategiries {
     static let SnakeHead: UInt32 = 0x1 << 1
     // Яблоко
     static let Apple: UInt32 = 0x1 << 2
-   // Край сцены (экрана)
+   // Край сцены/экрана
     static let EdgeBody: UInt32 = 0x1 << 3
 }
 
