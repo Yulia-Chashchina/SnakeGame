@@ -10,80 +10,181 @@ import SpriteKit
 import GameplayKit
 
 class GameScene: SKScene {
+//     наша змея
+    var snake : Snake?
     
-    private var label : SKLabelNode?
-    private var spinnyNode : SKShapeNode?
-    
+    // вызывается при первом запуске сцены
     override func didMove(to view: SKView) {
         
-        // Get label node from scene and store it for use later
-        self.label = self.childNode(withName: "//helloLabel") as? SKLabelNode
-        if let label = self.label {
-            label.alpha = 0.0
-            label.run(SKAction.fadeIn(withDuration: 2.0))
-        }
+        backgroundColor = SKColor.black
+        self.physicsWorld.gravity = CGVector(dx: 0, dy: 0)
+        self.physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
+        self.physicsBody?.allowsRotation = false
         
-        // Create shape node to use during mouse interaction
-        let w = (self.size.width + self.size.height) * 0.05
-        self.spinnyNode = SKShapeNode.init(rectOf: CGSize.init(width: w, height: w), cornerRadius: w * 0.3)
+        // устанавливаем категорию взаимодействия с другими объектами
+        self.physicsBody?.categoryBitMask = CollisionCategiries.EdgeBody
         
-        if let spinnyNode = self.spinnyNode {
-            spinnyNode.lineWidth = 2.5
-            
-            spinnyNode.run(SKAction.repeatForever(SKAction.rotate(byAngle: CGFloat(Double.pi), duration: 1)))
-            spinnyNode.run(SKAction.sequence([SKAction.wait(forDuration: 0.5),
-                                              SKAction.fadeOut(withDuration: 0.5),
-                                              SKAction.removeFromParent()]))
+        // устанавливаем категории, с которыми будут пересекаться края сцены
+        self.physicsBody?.collisionBitMask = CollisionCategiries.Snake | CollisionCategiries.SnakeHead
+        
+        
+        // Делаем нашу сцену делегатом соприкосновений
+        self.physicsWorld.contactDelegate = self
+        view.showsPhysics = true
+        // поворот против часовой стрелки // создаем ноду (объект)
+        let counterClockwiseButton = SKShapeNode()
+        
+        // задаем форму круга
+        counterClockwiseButton.path = UIBezierPath(ovalIn: CGRect(x: 0, y: 0, width: 45, height: 45)).cgPath
+        
+        // указываем координаты размещения
+        counterClockwiseButton.position = CGPoint(x:view.scene!.frame.minX+30, y:view.scene!.frame.minY+30)
+        
+        // цвет заливки
+        counterClockwiseButton.fillColor = UIColor.gray
+        
+        // цвет рамки
+        counterClockwiseButton.strokeColor = UIColor.gray
+        
+        // толщина рамки
+        counterClockwiseButton.lineWidth = 10
+        
+        // имя объекта для взаимодействия
+        counterClockwiseButton.name = "counterClockwiseButton"
+        
+        // Добавляем на сцену
+        self.addChild(counterClockwiseButton)
+        
+        // Поворот по часовой стрелке
+        let clockwiseButton = SKShapeNode()
+        clockwiseButton.path = UIBezierPath(ovalIn: CGRect(x:0, y:0, width: 45, height: 45)).cgPath
+        clockwiseButton.position = CGPoint(x: view.scene!.frame.maxX-80, y: view.scene!.frame.minY+30)
+        clockwiseButton.fillColor = UIColor.gray
+         clockwiseButton.strokeColor = UIColor.gray
+        clockwiseButton.lineWidth = 10
+        clockwiseButton.name = "clockwiseButton"
+        
+        self.addChild(clockwiseButton)
+        
+        createApple()
+//         создаем змею по центру экрана и добавляем ее на сцену
+        snake = Snake(atPoint: CGPoint(x: view.scene!.frame.midX, y: view.scene!.frame.midY))
+        self.addChild(snake!)
         }
-    }
-    
-    
-    func touchDown(atPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.green
-            self.addChild(n)
-        }
-    }
-    
-    func touchMoved(toPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.blue
-            self.addChild(n)
-        }
-    }
-    
-    func touchUp(atPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.red
-            self.addChild(n)
-        }
-    }
-    
+    // вызывается при нажатии на экран
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if let label = self.label {
-            label.run(SKAction.init(named: "Pulse")!, withKey: "fadeInOut")
-        }
+        // перебираем все точки, куда прикоснулся палец
         
-        for t in touches { self.touchDown(atPoint: t.location(in: self)) }
+        for touch in touches {
+            // определяем координаты касания для точки
+            let touchLocation = touch.location(in: self)
+            // проверяем, есть ли объект по этим координатам, и если есть, то не наша ли это кнопка
+            guard let touchedNode = self.atPoint(touchLocation) as? SKShapeNode,
+            touchedNode.name == "counterClockwiseButton" || touchedNode.name == "clockwiseButton"
+                else {
+                    return
+            }
+            // если это наша кнопка, заливаем ее зеленой
+            touchedNode.fillColor = .green
+            // определяем, какая кнопка нажата и поворачиваем в нужную сторону
+            if touchedNode.name == "counterClockwiseButton" {
+                snake!.moveCounterClockwise()
+            } else if touchedNode.name == "clockwiseButton" {
+                snake!.moveClockwise()
+            }
+        }
     }
-    
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { self.touchMoved(toPoint: t.location(in: self)) }
-    }
-    
+    // вызывается при прекращении нажатия на экран
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
+        for touch in touches {
+            let touchLocation = touch.location(in: self)
+             guard let touchedNode = self.atPoint(touchLocation) as? SKShapeNode,
+            touchedNode.name == "counterClockwiseButton" || touchedNode.name == "clockwiseButton"
+                else {
+                    return
+            }
+//но делаем цвет снова серый
+            touchedNode.fillColor = UIColor.gray
+        }
     }
+    
     
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
+        
+    }
+    // вызывается при обработке кадров сцены
+    override func update(_ currentTime: TimeInterval) {
+        snake!.move()
     }
     
+    // Создаем яблоко в случайной точке сцены
+    func createApple() {
+        
+        // Случайная точка на экране
+        let randX = CGFloat(arc4random_uniform(UInt32(view!.scene!.frame.maxX-5))+1)
+        let randY = CGFloat(arc4random_uniform(UInt32(view!.scene!.frame.maxY-5))+1)
+        
+        // Создаем яблоко
+        let apple = Apple(position: CGPoint(x: randX, y: randY))
+        
+        // Добавляем яблоко на сцену
+        self.addChild(apple)
+    }
     
-    override func update(_ currentTime: TimeInterval) {
-        // Called before each frame is rendered
+    }
+
+
+
+
+  // Имплементируем протокол
+extension GameScene: SKPhysicsContactDelegate {
+    // Добавляем метод отслеживания начала столкновения
+    func didBegin(_ contact: SKPhysicsContact) {
+     // логическая сумма масок соприкоснувшихся объектов
+        let bodyes = contact.bodyA.categoryBitMask | contact.bodyB.categoryBitMask
+        
+        // вычитаем из суммы голову змеи и у нас остается маска второго объекта
+        let collisionObject = bodyes ^ CollisionCategiries.SnakeHead
+        
+       // проверяем, что это за второй объект
+        switch collisionObject {
+        case CollisionCategiries.Apple:
+//проверяем что это яблоко
+// яблоко это один из двух объектов, которые соприкоснулись. Используем тернарный оператор, чтобы вычислить какой именно
+            let apple = contact.bodyA.node is Apple ? contact.bodyA.node: contact.bodyB.node
+         // добавляем к змее еще одну секцию
+            snake?.addBodyPart()
+          // удаляем съеденное яблоко со сцены
+            apple?.removeFromParent()
+          // создаем новое яблоко
+            createApple()
+        case CollisionCategiries.EdgeBody:
+//            проверяем, что это стенка экрана
+//удаляем змейку при соприкосновении с экраном
+        snake?.removeFromParent()
+//создаем новую змейку по центру экрана и добавляем ее на сцену
+        snake = Snake(atPoint: CGPoint(x: (view?.scene!.frame.midX)!, y: (view?.scene!.frame.midY)!))
+        self.addChild(snake!)
+            break
+        default:
+            break
+        }
     }
 }
+
+// Категория пересечения объектов
+struct CollisionCategiries {
+    // Тело змеи
+    static let Snake: UInt32 = 0x1 << 0
+    // Голова змеи
+    static let SnakeHead: UInt32 = 0x1 << 1
+    // Яблоко
+    static let Apple: UInt32 = 0x1 << 2
+   // Край сцены (экрана)
+    static let EdgeBody: UInt32 = 0x1 << 3
+}
+
+
+
+
+

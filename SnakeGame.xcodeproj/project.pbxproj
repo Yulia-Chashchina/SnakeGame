@@ -8,26 +8,30 @@
 
 /* Begin PBXBuildFile section */
 		BCB6579820C7ECD500084E1C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB6579720C7ECD500084E1C /* AppDelegate.swift */; };
-		BCB6579A20C7ECD500084E1C /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = BCB6579920C7ECD500084E1C /* GameScene.sks */; };
-		BCB6579C20C7ECD500084E1C /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = BCB6579B20C7ECD500084E1C /* Actions.sks */; };
 		BCB6579E20C7ECD500084E1C /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB6579D20C7ECD500084E1C /* GameScene.swift */; };
 		BCB657A020C7ECD500084E1C /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB6579F20C7ECD500084E1C /* GameViewController.swift */; };
 		BCB657A320C7ECD500084E1C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BCB657A120C7ECD500084E1C /* Main.storyboard */; };
 		BCB657A520C7ECD600084E1C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BCB657A420C7ECD600084E1C /* Assets.xcassets */; };
 		BCB657A820C7ECD600084E1C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BCB657A620C7ECD600084E1C /* LaunchScreen.storyboard */; };
+		BCB657B020C801E200084E1C /* Apple.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB657AF20C801E200084E1C /* Apple.swift */; };
+		BCB657B220C8091900084E1C /* SnakeBodyPart.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB657B120C8091900084E1C /* SnakeBodyPart.swift */; };
+		BCB657B420C80BE900084E1C /* SnakeHead.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB657B320C80BE900084E1C /* SnakeHead.swift */; };
+		BCB657B620C80CFA00084E1C /* Snake.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCB657B520C80CFA00084E1C /* Snake.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		BCB6579420C7ECD500084E1C /* SnakeGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SnakeGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCB6579720C7ECD500084E1C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		BCB6579920C7ECD500084E1C /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
-		BCB6579B20C7ECD500084E1C /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Actions.sks; sourceTree = "<group>"; };
 		BCB6579D20C7ECD500084E1C /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		BCB6579F20C7ECD500084E1C /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		BCB657A220C7ECD500084E1C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		BCB657A420C7ECD600084E1C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BCB657A720C7ECD600084E1C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BCB657A920C7ECD600084E1C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BCB657AF20C801E200084E1C /* Apple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Apple.swift; sourceTree = "<group>"; };
+		BCB657B120C8091900084E1C /* SnakeBodyPart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnakeBodyPart.swift; sourceTree = "<group>"; };
+		BCB657B320C80BE900084E1C /* SnakeHead.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnakeHead.swift; sourceTree = "<group>"; };
+		BCB657B520C80CFA00084E1C /* Snake.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Snake.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,14 +65,16 @@
 			isa = PBXGroup;
 			children = (
 				BCB6579720C7ECD500084E1C /* AppDelegate.swift */,
-				BCB6579920C7ECD500084E1C /* GameScene.sks */,
-				BCB6579B20C7ECD500084E1C /* Actions.sks */,
 				BCB6579D20C7ECD500084E1C /* GameScene.swift */,
 				BCB6579F20C7ECD500084E1C /* GameViewController.swift */,
 				BCB657A120C7ECD500084E1C /* Main.storyboard */,
 				BCB657A420C7ECD600084E1C /* Assets.xcassets */,
 				BCB657A620C7ECD600084E1C /* LaunchScreen.storyboard */,
 				BCB657A920C7ECD600084E1C /* Info.plist */,
+				BCB657AF20C801E200084E1C /* Apple.swift */,
+				BCB657B120C8091900084E1C /* SnakeBodyPart.swift */,
+				BCB657B320C80BE900084E1C /* SnakeHead.swift */,
+				BCB657B520C80CFA00084E1C /* Snake.swift */,
 			);
 			path = SnakeGame;
 			sourceTree = "<group>";
@@ -132,10 +138,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				BCB657A320C7ECD500084E1C /* Main.storyboard in Resources */,
-				BCB6579A20C7ECD500084E1C /* GameScene.sks in Resources */,
 				BCB657A520C7ECD600084E1C /* Assets.xcassets in Resources */,
 				BCB657A820C7ECD600084E1C /* LaunchScreen.storyboard in Resources */,
-				BCB6579C20C7ECD500084E1C /* Actions.sks in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -146,8 +150,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BCB657B420C80BE900084E1C /* SnakeHead.swift in Sources */,
+				BCB657B020C801E200084E1C /* Apple.swift in Sources */,
 				BCB6579E20C7ECD500084E1C /* GameScene.swift in Sources */,
 				BCB657A020C7ECD500084E1C /* GameViewController.swift in Sources */,
+				BCB657B220C8091900084E1C /* SnakeBodyPart.swift in Sources */,
+				BCB657B620C80CFA00084E1C /* Snake.swift in Sources */,
 				BCB6579820C7ECD500084E1C /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
